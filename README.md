@@ -60,8 +60,8 @@ This is a comprehensive ROS2-based project for a wheeled-legged robot, featuring
 
 ## System Requirements 💻
 
-- Ubuntu 20.04 or higher 🐧
-- ROS2 Foxy/Focal or higher 🤖
+- Ubuntu 22.04 or higher 🐧
+- ROS2 Humble 🤖
 - Python 3.8+ 🐍
 - Related hardware (wheeled-legged robot platform, sensors, etc.) ⚙️
 
