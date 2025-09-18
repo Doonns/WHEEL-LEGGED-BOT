@@ -14,7 +14,10 @@ This is a comprehensive ROS2-based project for a wheeled-legged robot, featuring
 ├── robot_navigation2      # Robot navigation system
 ├── rplidar_ros            # RPLIDAR driver for ROS2
 ├── voice_assistant        # Voice assistant with sensor integration
-└── wit_ros2_imu           # IMU sensor module
+├── wit_ros2_imu           # IMU sensor module
+├── ROBOT.html             # Robot documentation and visualization
+├── rdk_duplex.py          # Duplex communication module
+└── robot.py               # Main robot control interface
 ```
 
 ## Module Descriptions 🧩
@@ -58,6 +61,17 @@ This is a comprehensive ROS2-based project for a wheeled-legged robot, featuring
 - ROS2 driver for Wit IMU sensors
 - Provides attitude and motion information
 
+### ROBOT.html 🌐
+- Interactive robot documentation and visualization interface
+- Provides detailed information about the robot's structure and capabilities
+
+### rdk_duplex.py 🔗
+- Implements duplex communication functionality
+- Enables bidirectional data exchange between systems
+
+### robot.py 🤖
+- Main robot control interface
+- Centralized control and coordination of robot functions
 ## System Requirements 💻
 
 - Ubuntu 22.04 or higher 🐧
