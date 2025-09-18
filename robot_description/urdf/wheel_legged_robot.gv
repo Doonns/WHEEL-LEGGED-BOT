@@ -1,0 +1,11 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"imu_link" [label="imu_link"];
+"laser" [label="laser"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "imu_joint" [label="xyz: 0 0 0.235 \nrpy: 0 -0 0"]
+"imu_joint" -> "imu_link"
+"base_link" -> "laser_joint" [label="xyz: 0 0 0.27 \nrpy: 0 -0 0"]
+"laser_joint" -> "laser"
+}

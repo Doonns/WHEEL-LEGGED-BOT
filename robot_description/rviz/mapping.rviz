@@ -1,0 +1,32 @@
+GlobalOptions:
+  BackgroundColor: 48;48;48
+  FixedFrame: map
+Displays:
+  - Class: rviz_default_plugins/displays/grid/GridDisplay
+    Enabled: true
+    Name: Grid
+    Parameters:
+      Alpha: 0.8
+      CellCount: 20
+      CellSize: 1
+      Color: 160;160;160
+      Plane: XY
+      ReferenceFrame: <Fixed Frame>
+  - Class: rviz_default_plugins/displays/laser_scan/LaserScanDisplay
+    Enabled: true
+    Name: LaserScan
+    Parameters:
+      Topic: /scan
+      Color: 255;0;0
+      Size (m): 0.05
+  - Class: rviz_default_plugins/displays/map/MapDisplay
+    Enabled: true
+    Name: Map
+    Parameters:
+      Topic: map
+      Color Scheme: costmap
+      Draw Behind: false
+Toolbars:
+  - Name: Tool Panel
+    Tools:
+      - Class: rviz_default_plugins/tools/select/SelectTool

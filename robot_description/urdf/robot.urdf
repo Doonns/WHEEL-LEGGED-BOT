@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="wheel_legged_robot">
+
+  <!-- 底盘 base_link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <!--长=0.386m, 宽=0.230m, 高=0.225m -->
+        <box size="0.386 0.230 0.225"/>
+      </geometry>
+      <origin xyz="0 0 0.1125"/><!-- z = 高度的一半 -->
+      <material name="blue">
+        <color rgba="0 0 1 1"/> <!-- 蓝色 -->
+      </material>
+    </visual>
+  </link>
+
+  <!-- 激光雷达 laser -->
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser"/>
+    <!-- 相对于 base_link 的位置 -->
+    <origin xyz="0 0 0.27" rpy="0 0 3.14"/>
+  </joint>
+
+  <link name="laser">
+    <visual>
+      <geometry>
+        <!-- 假设为一个小圆柱体 -->
+        <cylinder radius="0.04" length="0.05"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/> <!-- 红色 -->
+      </material>
+    </visual>
+  </link>
+
+  <!-- IMU -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <!-- 相对于 base_link 的位置 -->
+    <origin xyz="0 0 0.235"/>
+  </joint>
+
+  <link name="imu_link">
+    <visual>
+      <geometry>
+        <!-- 假设为小方块 -->
+        <box size="0.04 0.04 0.02"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/> <!-- 绿色 -->
+      </material>
+    </visual>
+  </link>
+
+</robot>

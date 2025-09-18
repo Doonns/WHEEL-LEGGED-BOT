@@ -1,0 +1,26 @@
+ekf_filter_node:
+  ros__parameters:
+    use_sim_time: false
+    frequency: 50.0
+    sensor_timeout: 0.1
+
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_link
+    world_frame: odom
+
+    two_d_mode: true
+    publish_tf: true
+
+    imu0: imu/data_raw
+    imu0_config: [false, false, false,  # x y z position
+                  false, false, false,  # x y z velocity
+                  false, false, true,   # x y z orientation
+                  false, false, false,  # x y z linear acceleration
+                  false, false,  true]   # x y z angular velocity
+    imu0_differential: false
+    imu0_remove_gravitational_acceleration: true
+
+    transform_timeout: 0.5
+    print_diagnostics: true
+    reset_on_time_jump: true

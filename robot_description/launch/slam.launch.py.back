@@ -1,0 +1,115 @@
+from launch import LaunchDescription
+from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
+
+# 用于手动拼接路径
+import os
+from ament_index_python.packages import get_package_share_directory
+
+def generate_launch_description():
+    # 参数声明
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+
+    # 获取 robot_description 包的共享目录
+    robot_description_dir = get_package_share_directory('robot_description')
+
+    # 构造 display.launch.py 的绝对路径
+    display_launch_path = os.path.join(robot_description_dir, 'launch', 'display.launch.py')
+
+    # 构造 RViz 配置文件路径
+    rviz_config_path = os.path.join(robot_description_dir, 'rviz', 'mapping.rviz')
+
+    return LaunchDescription([
+        # 参数：是否使用仿真时间
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use simulation time if true'
+        ),
+
+        # 启动 RPLIDAR 雷达节点
+        Node(
+            package='rplidar_ros',
+            executable='rplidar_node',
+            name='rplidar_node',
+            parameters=[{
+                'serial_port': '/dev/ttyUSB1',
+                'serial_baudrate': 115200,
+                'frame_id': 'laser',
+                'inverted': False,
+                'angle_compensate': True
+            }],
+            output='screen'
+        ),
+
+        # 启动 IMU 驱动节点
+        Node(
+            package='wit_ros2_imu',
+            executable='wit_ros2_imu',
+            name='imu_node',
+            parameters=[{
+                'port': '/dev/imu_usb',
+                'baud': 9600
+            }],
+            remappings=[
+                ('/wit/imu', '/imu/data_raw')
+            ],
+            output='screen'
+        ),
+
+        # 手动加载 display.launch.py 并传参（避免 PathJoinSubstitution 解析失败）
+        IncludeLaunchDescription(
+            display_launch_path,
+            launch_arguments={
+                'jsp_gui': 'true'
+            }.items()
+        ),
+
+        # 手动添加 odom → base_link 静态变换（用于测试）
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_link']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'laser']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments=['0', '0', '0.235', '0', '0', '0', 'base_link', 'imu_link']
+        ),
+
+        # 启动 SLAM Toolbox 节点（融合 IMU + 雷达）
+        Node(
+            package='slam_toolbox',
+            executable='async_slam_toolbox_node',
+            name='slam_toolbox',
+            parameters=[{
+                'use_sim_time': use_sim_time,
+                'base_frame': 'base_link',
+                'map_frame': 'map',
+                'scan_topic': '/scan',
+                'imu_topic': '/imu/data_raw',
+                'enable_interactive_mode': False,
+                'publish_period': 5.0,
+                'minimum_travel_distance': 0.1,
+                'minimum_turn_angle': 0.1,
+                'max_laser_range': 6.0
+            }],
+            output='screen'
+        ),
+
+        # 启动 RViz 进行可视化
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            arguments=['-d', rviz_config_path],
+            output='screen'
+        )
+    ])

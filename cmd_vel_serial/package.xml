@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>cmd_vel_serial</name>
+  <version>1.0.0</version>
+  <description>Serial command sender based on /cmd_vel</description>
+
+  <maintainer email="wangyd@mail.dlut.edu.cn">your_name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+  <exec_depend>pyserial</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
